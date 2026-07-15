@@ -2,10 +2,14 @@
 .env
 .env.*
 !.env.example
-config/
-data/
-logs/
-secrets/
+config/*
+!config/.gitkeep
+data/*
+!data/.gitkeep
+logs/*
+!logs/.gitkeep
+secrets/*
+!secrets/.gitkeep
 
 # Build artifacts
 *.tar

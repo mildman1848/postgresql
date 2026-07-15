@@ -1,4 +1,4 @@
-# PostgreSQL LSIO Image
+# PostgreSQL
 
 LinuxServer.io-style s6-overlay container image for PostgreSQL.
 
@@ -20,6 +20,12 @@ make lint
 IMAGE_TAG=dev PLATFORMS=linux/amd64 make build
 make smoke
 ```
+
+## Description
+
+PostgreSQL packaged in a LinuxServer.io-style s6 container.
+
+This repository builds the `postgresql` container image. It uses a LinuxServer.io-style runtime, s6-overlay supervision, `/config` persistence, secure local secret generation, and CI-based multi-platform builds.
 
 ## Versioning
 
@@ -56,10 +62,10 @@ Current image version:
 
 Configured targets after validation:
 
-- GHCR: `ghcr.io/mildman1848/postgresql-lsio`
-- Docker Hub: `docker.io/<DOCKERHUB_USERNAME>/postgresql-lsio`
-- GitLab: `registry.gitlab.com/mildman1848/postgresql-lsio`
-- Codeberg-compatible registry: `codeberg.org/mildman1848/postgresql-lsio`
+- GHCR: `ghcr.io/mildman1848/postgresql`
+- Docker Hub: `docker.io/<DOCKERHUB_USERNAME>/postgresql`
+- GitLab: `registry.gitlab.com/mildman1848/postgresql`
+- Codeberg-compatible registry: `codeberg.org/mildman1848/postgresql`
 
 Publishing is manual through GitHub Actions `workflow_dispatch` with `push=true`.
 

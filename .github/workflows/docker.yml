@@ -22,7 +22,7 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: postgresql-lsio
+      IMAGE_NAME: postgresql
       APP_VERSION: 16.14
       IMAGE_REVISION: mld1
       VERSION: 16.14-mld1

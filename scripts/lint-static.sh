@@ -8,7 +8,7 @@ fail=0
 
 while IFS= read -r -d '' file; do
   case "$file" in
-    */dependencies.d/*|*/contents.d/*)
+    */dependencies.d/*|*/contents.d/*|*/.gitkeep)
       continue
       ;;
   esac

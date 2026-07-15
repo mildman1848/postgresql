@@ -2,7 +2,7 @@
 set -euo pipefail
 
 image="${1:?Usage: smoke-test.sh IMAGE}"
-name="postgresql-lsio-smoke-$$"
+name="postgresql-smoke-$$"
 tmpdir="$(mktemp -d)"
 trap '${DOCKER:-docker} rm -f "$name" >/dev/null 2>&1 || true; rm -rf "$tmpdir"' EXIT
 

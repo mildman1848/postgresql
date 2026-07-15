@@ -1,7 +1,7 @@
 services:
   postgresql:
-    image: ${IMAGE_NAME:-postgresql-lsio}:${IMAGE_TAG:-dev}
-    container_name: postgresql-lsio
+    image: ${IMAGE_NAME:-postgresql}:${IMAGE_TAG:-dev}
+    container_name: postgresql
     restart: unless-stopped
     environment:
       PUID: ${PUID:-1000}
