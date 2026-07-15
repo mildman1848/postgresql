@@ -2,8 +2,18 @@
 # shellcheck shell=bash
 set -euo pipefail
 
-echo "-------------------------------------"
-echo "LSIO-style image"
-echo "Image: ${APP_NAME:-unknown} ${APP_VERSION:-unknown}"
-echo "-------------------------------------"
+cat <<'EOF'
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ __  __ _ _     _                         _ ___  _  _   ___ 
+|  \/  (_) | __| |_ __ ___   __ _ _ __   / |( _ )| || | ( _ )
+| |\/| | | |/ _` | '_ ` _ \ / _` | '_ \  | |/ _ \| || | / _ \
+| |  | | | | (_| | | | | | | (_| | | | | | | (_) |__   _| (_) |
+|_|  |_|_|_|\__,_|_| |_| |_|\__,_|_| |_| |_|\___/   |_|  \___/
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EOF
 
+printf 'Brand: Mildman1848\n'
+printf 'Image: %s %s\n' "${APP_NAME:-unknown}" "${VERSION:-${APP_VERSION:-unknown}}"
+printf 'Runtime: LinuxServer.io-style s6-overlay container\n'
+printf 'User: abc via PUID/PGID after initialization\n'
+printf '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n'
