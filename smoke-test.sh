@@ -7,8 +7,7 @@ tmpdir="$(mktemp -d)"
 trap '${DOCKER:-docker} rm -f "$name" >/dev/null 2>&1 || true; rm -rf "$tmpdir"' EXIT
 
 mkdir -p "$tmpdir/config"
-printf 'change-me-in-production
-' > "$tmpdir/password"
+printf 'change-me-in-production' > "$tmpdir/password"
 
 ${DOCKER:-docker} run -d --name "$name"   -e PUID="$(id -u)"   -e PGID="$(id -g)"   -e POSTGRES_DB=smoke   -e FILE__POSTGRES_PASSWORD=/run/secrets/postgres_password   -v "$tmpdir/config:/config"   -v "$tmpdir/password:/run/secrets/postgres_password:ro"   "$image"
 

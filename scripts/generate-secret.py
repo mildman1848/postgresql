@@ -49,7 +49,6 @@ def main() -> int:
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as handle:
             handle.write(secret_value)
-            handle.write("\n")
     finally:
         try:
             os.chmod(path, 0o600)
