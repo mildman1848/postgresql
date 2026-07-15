@@ -62,3 +62,10 @@ Configured targets after validation:
 - Codeberg-compatible registry: `codeberg.org/mildman1848/postgresql-lsio`
 
 Publishing is manual through GitHub Actions `workflow_dispatch` with `push=true`.
+
+
+## Platform support
+
+Current CI builds `linux/amd64` and `linux/arm64`.
+
+`linux/arm/v7` is tracked as a Raspberry Pi compatibility goal, but it is currently blocked by `ghcr.io/linuxserver/baseimage-alpine:3.24` not publishing an `arm/v7` manifest. Do not advertise 32-bit Raspberry Pi support until the selected base image and upstream packages support it.

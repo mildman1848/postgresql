@@ -27,6 +27,7 @@ jobs:
           {
             echo "# Upstream monitor"
             echo
+            # shellcheck disable=SC2016
             printf '%s\n' '- Image: `postgresql-lsio`'
             printf '%s\n' "- Current LSIO base tag: \`${current_base:-unknown}\`"
             printf '%s\n' "- Alpine package signal: \`${package_version:-not found}\`"
