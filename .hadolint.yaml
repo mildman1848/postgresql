@@ -1,0 +1,9 @@
+ignored:
+  - DL3018  # LSIO/baseimage-driven apk package pinning is handled by base image refreshes.
+  - DL3059  # Multiple RUN blocks are allowed where they improve cache/debug readability.
+
+failure-threshold: warning
+
+trustedRegistries:
+  - docker.io
+  - ghcr.io

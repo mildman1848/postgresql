@@ -1,0 +1,22 @@
+services:
+  postgresql:
+    image: ${IMAGE_NAME:-postgresql-lsio}:${IMAGE_TAG:-dev}
+    container_name: postgresql-lsio
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID:-1000}
+      PGID: ${PGID:-1000}
+      TZ: ${TZ:-Europe/Berlin}
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      FILE__POSTGRES_PASSWORD: /run/secrets/postgres_password
+    secrets:
+      - postgres_password
+    volumes:
+      - ./config:/config
+    ports:
+      - "127.0.0.1:5432:5432"
+
+secrets:
+  postgres_password:
+    file: ./secrets/postgres_password.txt

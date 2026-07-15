@@ -1,0 +1,24 @@
+name: Docker
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      push:
+        description: Push image to registries
+        type: boolean
+        default: false
+
+jobs:
+  docker:
+    uses: mildman1848/mildman1848-docker-image-template/.github/workflows/docker-build.yml@main
+    with:
+      image_name: postgresql-lsio
+      dockerfile: Dockerfile
+      context: .
+      platforms: linux/amd64,linux/arm64,linux/arm/v7
+      push: ${{ github.event_name == 'workflow_dispatch' && inputs.push }}
+    secrets: inherit

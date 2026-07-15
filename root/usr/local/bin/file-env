@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# shellcheck shell=bash
+# Source this file from entry scripts: . /usr/local/bin/file-env
+
+while IFS='=' read -r name file_path; do
+  [[ "$name" == FILE__* ]] || continue
+  env_name="${name#FILE__}"
+  if [[ -n "${file_path}" && -r "${file_path}" ]]; then
+    export "${env_name}=$(<"${file_path}")"
+    echo "Loaded secret from ${name} into ${env_name}"
+  else
+    echo "Warning: ${name} points to unreadable path: ${file_path}" >&2
+  fi
+done < <(env | grep '^FILE__' || true)

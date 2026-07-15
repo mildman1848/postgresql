@@ -1,0 +1,20 @@
+# Local runtime data
+.env
+.env.*
+!.env.example
+config/
+data/
+logs/
+secrets/
+
+# Build artifacts
+*.tar
+*.sbom.json
+*.sarif
+__pycache__/
+*.py[cod]
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/

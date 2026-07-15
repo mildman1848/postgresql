@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ -x /usr/local/bin/app-healthcheck ]]; then
+  exec /usr/local/bin/app-healthcheck
+fi
+
+echo "No app-specific healthcheck installed" >&2
+exit 1

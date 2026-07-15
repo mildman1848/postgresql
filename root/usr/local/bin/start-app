@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+. /usr/local/bin/file-env
+
+: "${PGDATA:=/config/postgresql/data}"
+: "${POSTGRES_USER:=postgres}"
+: "${POSTGRES_DB:=postgres}"
+
+sql_escape() {
+  local value="$1"
+  printf "%s" "${value//\'/\'\'}"
+}
+
+mkdir -p "$PGDATA" /run/postgresql
+chown -R abc:abc /config /run/postgresql
+
+if [[ ! -s "$PGDATA/PG_VERSION" ]]; then
+  echo "Initializing PostgreSQL data directory at $PGDATA"
+  s6-setuidgid abc initdb -D "$PGDATA" --username="$POSTGRES_USER"
+
+  {
+    echo "listen_addresses = '*'"
+    echo "unix_socket_directories = '/run/postgresql'"
+  } >> "$PGDATA/postgresql.conf"
+
+  echo "host all all all scram-sha-256" >> "$PGDATA/pg_hba.conf"
+
+  if [[ -n "${POSTGRES_PASSWORD:-}" ]]; then
+    echo "Setting initial PostgreSQL password for $POSTGRES_USER"
+    escaped_password="$(sql_escape "$POSTGRES_PASSWORD")"
+    s6-setuidgid abc pg_ctl -D "$PGDATA" -w start
+    s6-setuidgid abc psql --username "$POSTGRES_USER" --dbname postgres -v ON_ERROR_STOP=1 \
+      -c "ALTER USER \"$POSTGRES_USER\" WITH PASSWORD '$escaped_password';"
+    if [[ "$POSTGRES_DB" != "postgres" ]]; then
+      s6-setuidgid abc createdb --username "$POSTGRES_USER" "$POSTGRES_DB" || true
+    fi
+    s6-setuidgid abc pg_ctl -D "$PGDATA" -m fast -w stop
+  else
+    echo "Warning: POSTGRES_PASSWORD is empty. Set FILE__POSTGRES_PASSWORD or POSTGRES_PASSWORD." >&2
+  fi
+fi
+
+exec s6-setuidgid abc postgres -D "$PGDATA"
