@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       push:
-        description: Push image to registries
+        description: Push image to configured registries
         type: boolean
         default: false
 
@@ -21,4 +21,8 @@ jobs:
       context: .
       platforms: linux/amd64,linux/arm64,linux/arm/v7
       push: ${{ github.event_name == 'workflow_dispatch' && inputs.push }}
+      # Optional registry targets. Configure matching credentials before enabling push.
+      gitlab_image: registry.gitlab.com/mildman1848/postgresql-lsio
+      codeberg_registry: codeberg.org
+      codeberg_image: codeberg.org/mildman1848/postgresql-lsio
     secrets: inherit
