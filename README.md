@@ -32,17 +32,17 @@ This repository builds the `postgresql` container image. It uses a LinuxServer.i
 This image follows the template versioning format:
 
 ```text
-<upstream-version>-mld<N>
+<upstream-version>-mldm<N>
 ```
 
 Current image version:
 
 ```text
-16.14-mld1
+16.14-mldm1
 ```
 
 - Upstream application/package version: `16.14`
-- Image revision: `mld1`
+- Image revision: `mldm1`
 
 ## Local development helpers
 
@@ -71,6 +71,7 @@ Use `TRIVY='sudo trivy'` and `SYFT='sudo syft'` if your Docker images are only v
 - `CHANGELOG.md` — project changes.
 - `docs/secrets.md` — secret generation and handling.
 - `docs/licensing.md` — license notes.
+- `docs/branding.md` — public branding rules and startup banner.
 
 ## Registries
 

@@ -7,7 +7,7 @@ These targets are implemented/recommended for all image repositories. The curren
 | Target | Purpose | Notes |
 |---|---|---|
 | `make info` | Print image name, upstream version, image revision, platforms, and registry targets. | Safe default for humans and CI logs. |
-| `make version` | Print only the combined image version, e.g. `16.14-mld1`. | Useful for scripts and release notes. |
+| `make version` | Print only the combined image version, e.g. `16.14-mldm1`. | Useful for scripts and release notes. |
 | `make labels` | Inspect built image OCI labels. | Verifies version/base/source metadata. |
 | `make scan` | Run local Trivy image scan. | Should not require registry push. |
 | `make sbom` | Generate an SBOM artifact locally. | Prefer SPDX or CycloneDX. |
