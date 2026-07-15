@@ -5,7 +5,9 @@ SECRET_DIR ?= secrets
 SECRET_LENGTH ?= 96
 FORCE ?= 0
 IMAGE_NAME ?= postgresql-lsio
-IMAGE_TAG ?= dev
+APP_VERSION ?= 16.14
+IMAGE_REVISION ?= milde1
+IMAGE_TAG ?= $(APP_VERSION)-$(IMAGE_REVISION)
 PLATFORMS ?= linux/amd64,linux/arm64,linux/arm/v7
 DOCKER ?= docker
 
@@ -36,7 +38,7 @@ clean-secrets: ## Delete generated local secrets; requires FORCE=1.
 	@rm -rf "$(SECRET_DIR)"
 
 build: ## Build image with Docker Buildx.
-	@DOCKER="$(DOCKER)" IMAGE_NAME="$(IMAGE_NAME)" IMAGE_TAG="$(IMAGE_TAG)" DOCKERFILE=Dockerfile CONTEXT=. PLATFORMS="$(PLATFORMS)" ./scripts/buildx-build.sh --load
+	@DOCKER="$(DOCKER)" IMAGE_NAME="$(IMAGE_NAME)" IMAGE_TAG="$(IMAGE_TAG)" APP_VERSION="$(APP_VERSION)" IMAGE_REVISION="$(IMAGE_REVISION)" DOCKERFILE=Dockerfile CONTEXT=. PLATFORMS="$(PLATFORMS)" ./scripts/buildx-build.sh --load
 
 smoke: ## Smoke-test local image.
 	@DOCKER="$(DOCKER)" ./smoke-test.sh "$(IMAGE_NAME):$(IMAGE_TAG)"

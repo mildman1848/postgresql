@@ -21,6 +21,23 @@ IMAGE_TAG=dev PLATFORMS=linux/amd64 make build
 make smoke
 ```
 
+## Versioning
+
+This image follows the template versioning format:
+
+```text
+<upstream-version>-milde<N>
+```
+
+Current image version:
+
+```text
+16.14-milde1
+```
+
+- Upstream application/package version: `16.14`
+- Milde image revision: `milde1`
+
 ## Runtime conventions
 
 - Persistent data: `/config`
