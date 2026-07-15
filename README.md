@@ -1,8 +1,15 @@
-# PostgreSQL LSIO
+# PostgreSQL LSIO Image
 
-LinuxServer.io-style s6-overlay container image for postgresql.
+LinuxServer.io-style s6-overlay container image for PostgreSQL.
 
-This is a standalone image repository derived from `mildman1848-docker-image-template`.
+This is a standalone image repository derived from [`mildman1848-docker-image-template`](https://github.com/mildman1848/mildman1848-docker-image-template).
+
+## Status
+
+- Local amd64 build: passing.
+- Local smoke test: passing.
+- Multiarch CI: prepared.
+- Registry publishing: GHCR and Docker Hub first; GitLab and Codeberg-compatible registries are prepared but should only be enabled after CI builds are green.
 
 ## Quick start
 
@@ -14,15 +21,27 @@ IMAGE_TAG=dev PLATFORMS=linux/amd64 make build
 make smoke
 ```
 
-## Ports
+## Runtime conventions
 
-- `5432`
+- Persistent data: `/config`
+- Runtime user: `abc`, controlled by `PUID`/`PGID`
+- Timezone: `TZ`
+- Secrets: `FILE__*` mounted files
+
+## Documentation
+
+- `UPSTREAM.md` — upstream source, packaging approach, and divergence from official images.
+- `CHANGELOG.md` — project changes.
+- `docs/secrets.md` — secret generation and handling.
+- `docs/licensing.md` — license notes.
 
 ## Registries
 
-Initial target after local validation:
+Configured targets after validation:
 
-- GHCR
-- Docker Hub
+- GHCR: `ghcr.io/mildman1848/postgresql-lsio`
+- Docker Hub: `docker.io/<DOCKERHUB_USERNAME>/postgresql-lsio`
+- GitLab: `registry.gitlab.com/mildman1848/postgresql-lsio`
+- Codeberg-compatible registry: `codeberg.org/mildman1848/postgresql-lsio`
 
-GitLab and Codeberg registry targets will be added after PostgreSQL and MariaDB both build and pass smoke tests.
+Publishing is manual through GitHub Actions `workflow_dispatch` with `push=true`.

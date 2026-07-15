@@ -1,0 +1,53 @@
+name: Upstream Monitor
+
+on:
+  schedule:
+    - cron: '17 5 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Check upstream package and base image
+        id: check
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .tmp
+          current_base=$(awk '/^FROM ghcr.io\/linuxserver\/baseimage-alpine:/ {print $2; exit}' Dockerfile | cut -d: -f2)
+          latest_base=$(docker run --rm alpine:3.24 sh -c 'echo 3.24')
+          package_version=$(docker run --rm alpine:3.24 sh -c 'apk update >/dev/null && apk info -v postgresql16 2>/dev/null | head -1 || true')
+          {
+            echo "# Upstream monitor"
+            echo
+            echo "- Image: `postgresql-lsio`"
+            echo "- Current LSIO base tag: `${current_base:-unknown}`"
+            echo "- Alpine package signal: `${package_version:-not found}`"
+            echo "- Upstream: https://www.postgresql.org/"
+          } | tee .tmp/upstream-summary.md
+          cat .tmp/upstream-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Create or update upstream tracking issue
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const title = 'Upstream monitor: postgresql-lsio';
+            const marker = '<!-- upstream-monitor:postgresql-lsio -->';
+            const body = `${marker}\n${fs.readFileSync('.tmp/upstream-summary.md', 'utf8')}\n\nThis issue is managed by the upstream monitor workflow.`;
+            const {owner, repo} = context.repo;
+            const existing = await github.rest.issues.listForRepo({owner, repo, state: 'open', labels: 'upstream-monitor'});
+            const issue = existing.data.find(i => i.title === title);
+            if (issue) {
+              await github.rest.issues.update({owner, repo, issue_number: issue.number, body});
+            } else {
+              await github.rest.issues.create({owner, repo, title, body, labels: ['upstream-monitor']});
+            }
