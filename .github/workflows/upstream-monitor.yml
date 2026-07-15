@@ -22,7 +22,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p .tmp
-          current_base=$(awk '/^FROM ghcr.io\/linuxserver\/baseimage-alpine:/ {print $2; exit}' Dockerfile | cut -d: -f2)
+          current_base=$(grep -m1 '^FROM ghcr.io/linuxserver/baseimage-alpine:' Dockerfile | cut -d: -f2)
           package_version=$(docker run --rm alpine:3.24 sh -c 'apk update >/dev/null && apk search -x postgresql16 2>/dev/null | head -1 || true')
           {
             echo "# Upstream monitor"
