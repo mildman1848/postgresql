@@ -44,6 +44,20 @@ Current image version:
 - Upstream application/package version: `16.14`
 - Image revision: `mld1`
 
+## Local development helpers
+
+```bash
+make setup          # install/check hadolint, actionlint, trivy, syft
+make info           # print image metadata
+make build          # build local image
+make smoke          # run smoke test
+make scan           # run Trivy scan
+make sbom           # generate local SBOM
+make check-upstream # show base image and package signals
+```
+
+Use `TRIVY='sudo trivy'` and `SYFT='sudo syft'` if your Docker images are only visible through `sudo docker`.
+
 ## Runtime conventions
 
 - Persistent data: `/config`

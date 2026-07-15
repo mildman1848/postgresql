@@ -1,6 +1,6 @@
 # Proposed Make Targets
 
-These targets are recommended for all image repositories. The current baseline already includes `lint`, `build`, `smoke`, `secrets`, and `clean-secrets`.
+These targets are implemented/recommended for all image repositories. The current image repositories implement the high-value targets listed below. The template repository implements setup, check-tools, lint, secret, and clean.
 
 ## High-value next targets
 
@@ -31,3 +31,20 @@ Implement next in this order:
 6. Compose/debug helpers
 
 Do not add a full release automation target until GHCR/Docker Hub publishing has been verified with manual `workflow_dispatch` first.
+
+
+## Socket permissions
+
+If images were built with `sudo docker`, run scan/SBOM helpers with matching privileges:
+
+```bash
+make scan TRIVY='sudo trivy'
+make sbom SYFT='sudo syft'
+```
+
+If your user is allowed to access the Docker socket directly, the defaults are enough:
+
+```bash
+make scan
+make sbom
+```
