@@ -24,7 +24,18 @@ if [[ ! -s "$PGDATA/PG_VERSION" ]]; then
     echo "unix_socket_directories = '/run/postgresql'"
   } >> "$PGDATA/postgresql.conf"
 
-  echo "host all all all scram-sha-256" >> "$PGDATA/pg_hba.conf"
+  cat > "$PGDATA/pg_hba.conf" <<'EOF'
+# Local socket access is allowed for the container runtime user.
+local all all trust
+# TCP access must authenticate with SCRAM.
+host all all 127.0.0.1/32 scram-sha-256
+host all all ::1/128 scram-sha-256
+host all all all scram-sha-256
+EOF
+
+  {
+    echo "password_encryption = 'scram-sha-256'"
+  } >> "$PGDATA/postgresql.conf"
 
   if [[ -n "${POSTGRES_PASSWORD:-}" ]]; then
     echo "Setting initial PostgreSQL password for $POSTGRES_USER"

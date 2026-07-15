@@ -1,3 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
+
+. /usr/local/bin/file-env
+
+if [[ -n "${POSTGRES_PASSWORD:-}" ]]; then
+  export PGPASSWORD="$POSTGRES_PASSWORD"
+  exec psql -h 127.0.0.1 -p 5432 -U "${POSTGRES_USER:-postgres}" -d "${POSTGRES_DB:-postgres}" -tAc 'SELECT 1;' >/dev/null
+fi
+
 exec pg_isready -h 127.0.0.1 -p 5432 -U "${POSTGRES_USER:-postgres}"
