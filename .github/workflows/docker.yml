@@ -21,7 +21,7 @@ jobs:
       context: .
       platforms: linux/amd64,linux/arm64,linux/arm/v7
       app_version: 16.14
-      image_revision: milde1
+      image_revision: mld1
       push: ${{ github.event_name == 'workflow_dispatch' && inputs.push }}
       # Optional registry targets. Configure matching credentials before enabling push.
       gitlab_image: registry.gitlab.com/mildman1848/postgresql-lsio

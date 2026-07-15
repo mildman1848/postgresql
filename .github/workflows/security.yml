@@ -55,9 +55,9 @@ jobs:
           tags: postgresql-lsio:security-scan
           build-args: |
             BUILD_DATE=${{ github.event.repository.updated_at }}
-            VERSION=16.14-milde1
+            VERSION=16.14-mld1
             APP_VERSION=16.14
-            IMAGE_REVISION=milde1
+            IMAGE_REVISION=mld1
             VCS_REF=${{ github.sha }}
 
       - name: Run Trivy image scan

@@ -23,14 +23,13 @@ jobs:
           set -euo pipefail
           mkdir -p .tmp
           current_base=$(awk '/^FROM ghcr.io\/linuxserver\/baseimage-alpine:/ {print $2; exit}' Dockerfile | cut -d: -f2)
-          latest_base=$(docker run --rm alpine:3.24 sh -c 'echo 3.24')
-          package_version=$(docker run --rm alpine:3.24 sh -c 'apk update >/dev/null && apk info -v postgresql16 2>/dev/null | head -1 || true')
+          package_version=$(docker run --rm alpine:3.24 sh -c 'apk update >/dev/null && apk search -x postgresql16 2>/dev/null | head -1 || true')
           {
             echo "# Upstream monitor"
             echo
-            echo "- Image: `postgresql-lsio`"
-            echo "- Current LSIO base tag: `${current_base:-unknown}`"
-            echo "- Alpine package signal: `${package_version:-not found}`"
+            printf '%s\n' '- Image: `postgresql-lsio`'
+            printf '%s\n' "- Current LSIO base tag: \`${current_base:-unknown}\`"
+            printf '%s\n' "- Alpine package signal: \`${package_version:-not found}\`"
             echo "- Upstream: https://www.postgresql.org/"
           } | tee .tmp/upstream-summary.md
           cat .tmp/upstream-summary.md >> "$GITHUB_STEP_SUMMARY"

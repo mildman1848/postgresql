@@ -3,7 +3,7 @@
 set -euo pipefail
 
 echo "-------------------------------------"
-echo "Milde LSIO-style image"
+echo "LSIO-style image"
 echo "Image: ${APP_NAME:-unknown} ${APP_VERSION:-unknown}"
 echo "-------------------------------------"
 
