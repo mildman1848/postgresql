@@ -15,6 +15,7 @@ data/*
 !data/.gitkeep
 logs/*
 !logs/.gitkeep
+sbom/
 *.tar
 *.sbom.json
 *.sarif

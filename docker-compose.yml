@@ -1,6 +1,6 @@
 services:
   postgresql:
-    image: ${IMAGE_NAME:-postgresql}:${IMAGE_TAG:-dev}
+    image: ${IMAGE_REF:-postgresql:dev}
     container_name: postgresql
     restart: unless-stopped
     environment:

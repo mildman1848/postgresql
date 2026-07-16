@@ -15,10 +15,14 @@ This is a standalone image repository derived from [`mildman1848-docker-image-te
 
 ```bash
 make help
-make secrets
-make lint
-IMAGE_TAG=dev PLATFORMS=linux/amd64 make build
-make smoke
+make env-setup
+make validate
+make build DOCKER='sudo docker'
+make smoke DOCKER='sudo docker'
+make security-scan DOCKER='sudo docker' TRIVY='sudo trivy'
+make sbom DOCKER='sudo docker' SYFT='sudo syft'
+make start DOCKER='sudo docker'
+make logs DOCKER='sudo docker'
 ```
 
 ## Description

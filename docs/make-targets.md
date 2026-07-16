@@ -1,50 +1,52 @@
-# Proposed Make Targets
+# Make Targets
 
-These targets are implemented/recommended for all image repositories. The current image repositories implement the high-value targets listed below. The template repository implements setup, check-tools, lint, secret, and clean.
+PostgreSQL follows the master Docker image template Makefile pattern with PostgreSQL-specific smoke/start behavior.
 
-## High-value next targets
-
-| Target | Purpose | Notes |
-|---|---|---|
-| `make info` | Print image name, upstream version, image revision, platforms, and registry targets. | Safe default for humans and CI logs. |
-| `make version` | Print only the combined image version, e.g. `16.14-mldm1`. | Useful for scripts and release notes. |
-| `make labels` | Inspect built image OCI labels. | Verifies version/base/source metadata. |
-| `make scan` | Run local Trivy image scan. | Should not require registry push. |
-| `make sbom` | Generate an SBOM artifact locally. | Prefer SPDX or CycloneDX. |
-| `make shell` | Start an interactive shell in the built image. | Debug-only; never in CI. |
-| `make logs` | Show logs from the last smoke-test container. | Useful when smoke fails. |
-| `make compose-up` | Start the included Compose example. | Local operator convenience. |
-| `make compose-down` | Stop the included Compose example. | Keep cleanup easy. |
-| `make clean-images` | Remove local test images. | Require `FORCE=1`. |
-| `make check-upstream` | Print current upstream package/base version signals. | Feeds release/changelog work. |
-| `make release-dry-run` | Show tags/labels that would be published. | Safety before registry push. |
-
-## Recommendation
-
-Implement next in this order:
-
-1. `info` and `version`
-2. `labels`
-3. `scan`
-4. `check-upstream`
-5. `release-dry-run`
-6. Compose/debug helpers
-
-Do not add a full release automation target until GHCR/Docker Hub publishing has been verified with manual `workflow_dispatch` first.
-
-
-## Socket permissions
-
-If images were built with `sudo docker`, run scan/SBOM helpers with matching privileges:
+## Common local workflow
 
 ```bash
-make scan TRIVY='sudo trivy'
-make sbom SYFT='sudo syft'
+make env-setup
+make validate
+make build DOCKER='sudo docker'
+make smoke DOCKER='sudo docker'
+make security-scan DOCKER='sudo docker' TRIVY='sudo trivy'
+make sbom DOCKER='sudo docker' SYFT='sudo syft'
+make start DOCKER='sudo docker'
+make status DOCKER='sudo docker'
+make logs DOCKER='sudo docker'
 ```
 
-If your user is allowed to access the Docker socket directly, the defaults are enough:
+## Core targets
+
+| Target | Purpose |
+|---|---|
+| `make info` | Print image metadata and effective refs. |
+| `make version` | Print `16.14-mldm1`. |
+| `make env-setup` | Create local `.env` from `.env.example`. |
+| `make env-validate` | Validate version/revision metadata. |
+| `make lint` | Static repo checks, s6 checks, private-term scan, Hadolint. |
+| `make validate` | `lint` + env validation + Actionlint. |
+| `make test` | `validate` + PostgreSQL smoke test. |
+| `make build` | Build local single-platform image with Buildx `--load`. |
+| `make smoke` | Start temporary container and run healthcheck. |
+| `make labels` | Inspect OCI labels of the built image. |
+| `make security-scan` | Trivy config scan plus image scan if built. |
+| `make sbom` | Generate SPDX JSON SBOM in `sbom/`. |
+| `make start` | Start a persistent local dev PostgreSQL container. |
+| `make stop` | Stop/remove the dev container. |
+| `make logs` | Show dev container logs. |
+| `make shell` | Open debug shell in image. |
+| `make check-upstream` | Show LSIO base and Alpine package signal. |
+| `make release-dry-run` | Print intended publish refs without pushing. |
+
+## Important local Docker note
+
+On systems where the current user cannot access `/var/run/docker.sock`, use matching privileges for Docker-backed tools:
 
 ```bash
-make scan
-make sbom
+make build DOCKER='sudo docker'
+make security-scan DOCKER='sudo docker' TRIVY='sudo trivy'
+make sbom DOCKER='sudo docker' SYFT='sudo syft'
 ```
+
+Using `DOCKER='sudo docker'` alone is not enough for Trivy/Syft, because those tools also need Docker socket access.

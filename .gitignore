@@ -15,6 +15,7 @@ secrets/*
 *.tar
 *.sbom.json
 *.sarif
+sbom/
 __pycache__/
 *.py[cod]
 
