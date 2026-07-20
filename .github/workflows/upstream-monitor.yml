@@ -36,7 +36,7 @@ jobs:
           cat .tmp/upstream-summary.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Create or update upstream tracking issue
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const fs = require('fs');
