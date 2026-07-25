@@ -24,8 +24,8 @@ jobs:
     env:
       IMAGE_NAME: postgresql
       APP_VERSION: 16.14
-      IMAGE_REVISION: mldm1
-      VERSION: 16.14-mldm1
+      IMAGE_REVISION: mldm2
+      VERSION: 16.14-mldm2
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
       GITLAB_REGISTRY_USER: ${{ secrets.GITLAB_REGISTRY_USER }}
