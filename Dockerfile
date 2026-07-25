@@ -6,8 +6,8 @@ FROM ghcr.io/linuxserver/baseimage-alpine:${LSIO_BASE_VERSION}
 ARG LSIO_BASE_VERSION
 ARG BUILD_DATE
 ARG APP_VERSION=16.14
-ARG IMAGE_REVISION=mldm1
-ARG VERSION=16.14-mldm1
+ARG IMAGE_REVISION=mldm2
+ARG VERSION=16.14-mldm2
 ARG VCS_REF
 
 LABEL build_version="Mildman1848 PostgreSQL version:- ${VERSION} Upstream:- ${APP_VERSION} Revision:- ${IMAGE_REVISION} Build-date:- ${BUILD_DATE}" \

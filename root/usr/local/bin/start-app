@@ -12,10 +12,18 @@ sql_escape() {
   printf "%s" "${value//\'/\'\'}"
 }
 
-mkdir -p "$PGDATA" /run/postgresql
+mkdir -p "$(dirname "$PGDATA")" /run/postgresql
 chown -R abc:abc /config /run/postgresql
 
 if [[ ! -s "$PGDATA/PG_VERSION" ]]; then
+  if [[ -d "$PGDATA" ]] && find "$PGDATA" -mindepth 1 -maxdepth 1 | grep -q .; then
+    failed_dir="${PGDATA}.failed-init.$(date -u +%Y%m%d%H%M%S)"
+    echo "Warning: $PGDATA exists but has no PG_VERSION; moving partial init to $failed_dir" >&2
+    mv "$PGDATA" "$failed_dir"
+  fi
+
+  mkdir -p "$PGDATA"
+  chown -R abc:abc "$PGDATA"
   echo "Initializing PostgreSQL data directory at $PGDATA"
   s6-setuidgid abc initdb -D "$PGDATA" --username="$POSTGRES_USER"
 
