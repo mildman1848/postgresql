@@ -30,13 +30,13 @@ Upstream status is tracked by `.github/workflows/upstream-monitor.yml`.
 Manual checks:
 
 ```bash
-docker run --rm alpine:3.24 sh -c 'apk update >/dev/null && apk info -v postgresql16'
+docker run --rm alpine:3.24 sh -c 'apk update >/dev/null && apk info -v postgresql18'
 ```
 
 ## Current tracked version
 
-- Upstream version: `16.14`
+- Upstream version: `18.4`
 - Image revision: `mldm1`
-- Combined image version: `16.14-mldm1`
+- Combined image version: `18.4-mldm1`
 
 Packaging-only changes should increment the image revision while keeping the upstream version unchanged.

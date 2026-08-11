@@ -12,6 +12,7 @@ VCS_REF="${VCS_REF:-$(git rev-parse --short=12 HEAD 2>/dev/null || echo unknown)
 VERSION="${VERSION:-${IMAGE_TAG}}"
 APP_VERSION="${APP_VERSION:-}"
 IMAGE_REVISION="${IMAGE_REVISION:-}"
+UPSTREAM_PACKAGE="${UPSTREAM_PACKAGE:-postgresql18}"
 ATTESTATIONS="${ATTESTATIONS:-true}"
 
 extra_args=("$@")
@@ -40,6 +41,7 @@ exec ${DOCKER} buildx build \
   --build-arg VERSION="$VERSION" \
   --build-arg APP_VERSION="$APP_VERSION" \
   --build-arg IMAGE_REVISION="$IMAGE_REVISION" \
+  --build-arg UPSTREAM_PACKAGE="$UPSTREAM_PACKAGE" \
   --build-arg VCS_REF="$VCS_REF" \
   --tag "${IMAGE_NAME}:${IMAGE_TAG}" \
   "${attestation_args[@]}" \

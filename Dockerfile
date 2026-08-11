@@ -5,10 +5,11 @@ FROM ghcr.io/linuxserver/baseimage-alpine:${LSIO_BASE_VERSION}
 
 ARG LSIO_BASE_VERSION
 ARG BUILD_DATE
-ARG APP_VERSION=16.14
-ARG IMAGE_REVISION=mldm2
-ARG VERSION=16.14-mldm2
+ARG APP_VERSION=18.4
+ARG IMAGE_REVISION=mldm1
+ARG VERSION=18.4-mldm1
 ARG VCS_REF
+ARG UPSTREAM_PACKAGE=postgresql18
 
 LABEL build_version="Mildman1848 PostgreSQL version:- ${VERSION} Upstream:- ${APP_VERSION} Revision:- ${IMAGE_REVISION} Build-date:- ${BUILD_DATE}" \
       maintainer="Mildman1848" \
@@ -38,8 +39,8 @@ RUN \
     ca-certificates \
     curl \
     jq \
-    postgresql16 \
-    postgresql16-client \
+    ${UPSTREAM_PACKAGE} \
+    ${UPSTREAM_PACKAGE}-client \
     shadow \
     tzdata && \
   echo "**** cleanup ****" && \

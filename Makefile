@@ -1,9 +1,9 @@
 .DEFAULT_GOAL := help
-SHELL := /usr/bin/env bash
+SHELL := /bin/bash
 
 IMAGE_NAME ?= postgresql
-APP_VERSION ?= 16.14
-IMAGE_REVISION ?= mldm2
+APP_VERSION ?= 18.4
+IMAGE_REVISION ?= mldm1
 VERSION ?= $(APP_VERSION)-$(IMAGE_REVISION)
 IMAGE_TAG ?= $(VERSION)
 REGISTRY ?= ghcr.io/mildman1848
@@ -26,7 +26,7 @@ PUID ?= $(shell id -u)
 PGID ?= $(shell id -g)
 TZ ?= Europe/Berlin
 FORCE ?= 0
-UPSTREAM_PACKAGE ?= postgresql16
+UPSTREAM_PACKAGE ?= postgresql18
 LSIO_BASE_IMAGE ?= ghcr.io/linuxserver/baseimage-alpine:3.24
 SBOM_FORMAT ?= spdx-json
 SBOM_OUTPUT ?= sbom/$(IMAGE_NAME)-$(IMAGE_TAG).spdx.json
@@ -103,15 +103,15 @@ require-image:
 	@$(DOCKER) image inspect '$(IMAGE_REF)' >/dev/null 2>&1 || { echo "ERROR: image not found locally: $(IMAGE_REF)" >&2; echo "Run: make build DOCKER='$(DOCKER)'" >&2; exit 2; }
 
 build: require-dockerfile ## Build local single-platform image with --load.
-	@DOCKER='$(DOCKER)' IMAGE_NAME='$(REGISTRY)/$(IMAGE_NAME)' IMAGE_TAG='$(IMAGE_TAG)' VERSION='$(VERSION)' IMAGE_REVISION='$(IMAGE_REVISION)' APP_VERSION='$(APP_VERSION)' DOCKERFILE='$(DOCKERFILE)' CONTEXT='$(CONTEXT)' PLATFORMS='$(LOAD_PLATFORM)' scripts/buildx-build.sh --load
+	@DOCKER='$(DOCKER)' IMAGE_NAME='$(REGISTRY)/$(IMAGE_NAME)' IMAGE_TAG='$(IMAGE_TAG)' VERSION='$(VERSION)' IMAGE_REVISION='$(IMAGE_REVISION)' APP_VERSION='$(APP_VERSION)' UPSTREAM_PACKAGE='$(UPSTREAM_PACKAGE)' DOCKERFILE='$(DOCKERFILE)' CONTEXT='$(CONTEXT)' PLATFORMS='$(LOAD_PLATFORM)' scripts/buildx-build.sh --load
 
 build-multiarch: require-dockerfile ## Build multiarch image without pushing.
-	@DOCKER='$(DOCKER)' IMAGE_NAME='$(REGISTRY)/$(IMAGE_NAME)' IMAGE_TAG='$(IMAGE_TAG)' VERSION='$(VERSION)' IMAGE_REVISION='$(IMAGE_REVISION)' APP_VERSION='$(APP_VERSION)' DOCKERFILE='$(DOCKERFILE)' CONTEXT='$(CONTEXT)' PLATFORMS='$(PLATFORMS)' scripts/buildx-build.sh
+	@DOCKER='$(DOCKER)' IMAGE_NAME='$(REGISTRY)/$(IMAGE_NAME)' IMAGE_TAG='$(IMAGE_TAG)' VERSION='$(VERSION)' IMAGE_REVISION='$(IMAGE_REVISION)' APP_VERSION='$(APP_VERSION)' UPSTREAM_PACKAGE='$(UPSTREAM_PACKAGE)' DOCKERFILE='$(DOCKERFILE)' CONTEXT='$(CONTEXT)' PLATFORMS='$(PLATFORMS)' scripts/buildx-build.sh
 
 build-manifest: build-multiarch ## Alias for local multiarch manifest validation build.
 
 build-manifest-push: require-dockerfile ## Build and push multiarch image manifest.
-	@DOCKER='$(DOCKER)' IMAGE_NAME='$(REGISTRY)/$(IMAGE_NAME)' IMAGE_TAG='$(IMAGE_TAG)' VERSION='$(VERSION)' IMAGE_REVISION='$(IMAGE_REVISION)' APP_VERSION='$(APP_VERSION)' DOCKERFILE='$(DOCKERFILE)' CONTEXT='$(CONTEXT)' PLATFORMS='$(PLATFORMS)' scripts/buildx-build.sh --push
+	@DOCKER='$(DOCKER)' IMAGE_NAME='$(REGISTRY)/$(IMAGE_NAME)' IMAGE_TAG='$(IMAGE_TAG)' VERSION='$(VERSION)' IMAGE_REVISION='$(IMAGE_REVISION)' APP_VERSION='$(APP_VERSION)' UPSTREAM_PACKAGE='$(UPSTREAM_PACKAGE)' DOCKERFILE='$(DOCKERFILE)' CONTEXT='$(CONTEXT)' PLATFORMS='$(PLATFORMS)' scripts/buildx-build.sh --push
 
 inspect-manifest: ## Inspect a local/remote image manifest.
 	@$(DOCKER) buildx imagetools inspect '$(IMAGE_REF)'
@@ -195,12 +195,12 @@ check-upstream baseimage-check: ## Print current pinned LSIO baseimage and Alpin
 	@$(DOCKER) buildx imagetools inspect '$(LSIO_BASE_IMAGE)' | sed -n '1,80p'
 	@echo ''
 	@echo 'Alpine package signal for $(UPSTREAM_PACKAGE):'
-	@$(DOCKER) run --rm alpine:3.24 sh -c 'apk update >/dev/null && apk search -x "$(UPSTREAM_PACKAGE)"'
+	@$(DOCKER) run --rm alpine:3.24 sh -c 'apk update >/dev/null && apk search -x "$(UPSTREAM_PACKAGE)" "$(UPSTREAM_PACKAGE)-client"'
 	@echo 'Upstream: https://www.postgresql.org/'
 
 release-dry-run: ## Show tags/metadata that would be published.
 	@printf 'Would publish image:\n  %s\n' '$(IMAGE_REF)'
-	@printf 'Additional expected tags:\n  latest on default branch\n  sha-$$(git rev-parse --short HEAD 2>/dev/null || echo unknown)\n'
+	@printf 'Additional expected tags:\n  latest on default branch\n  sha-%s\n' "$$(git rev-parse --short HEAD 2>/dev/null || echo unknown)"
 	@printf 'Platforms: %s\n' '$(PLATFORMS)'
 
 release: ## Guarded release target; use workflow_dispatch/push=true first.
