@@ -36,7 +36,7 @@ docker run --rm alpine:3.24 sh -c 'apk update >/dev/null && apk info -v postgres
 ## Current tracked version
 
 - Upstream version: `18.4`
-- Image revision: `mldm1`
-- Combined image version: `18.4-mldm1`
+- Image revision: `mldm2`
+- Combined image version: `18.4-mldm2`
 
 Packaging-only changes should increment the image revision while keeping the upstream version unchanged.
