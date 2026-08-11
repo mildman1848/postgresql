@@ -3,7 +3,7 @@ SHELL := /bin/bash
 
 IMAGE_NAME ?= postgresql
 APP_VERSION ?= 18.4
-IMAGE_REVISION ?= mldm3
+IMAGE_REVISION ?= mldm4
 VERSION ?= $(APP_VERSION)-$(IMAGE_REVISION)
 IMAGE_TAG ?= $(VERSION)
 REGISTRY ?= ghcr.io/mildman1848

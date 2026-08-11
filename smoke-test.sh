@@ -44,7 +44,7 @@ ${DOCKER_BIN} exec \
 ${DOCKER_BIN} exec \
   -e PGPASSWORD="$password" \
   "$name" \
-  psql -h 127.0.0.1 -p 5432 -U postgres -d smoke -tAc "SELECT name FROM pg_available_extensions WHERE name = 'vector';" | grep -qx 'vector'
+  psql -h 127.0.0.1 -p 5432 -U postgres -d smoke -tAc "SELECT string_agg(name, ',' ORDER BY name) FROM pg_available_extensions WHERE name IN ('pg_trgm', 'vector');" | grep -qx 'pg_trgm,vector'
 
 if ${DOCKER_BIN} exec \
   -e PGPASSWORD='deliberately-wrong-password' \

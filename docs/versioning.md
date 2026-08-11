@@ -9,7 +9,7 @@ This image uses an LSIO-inspired combined version: preserve the upstream Postgre
 Current version:
 
 ```text
-18.4-mldm3
+18.4-mldm4
 ```
 
 ## Components
@@ -17,7 +17,7 @@ Current version:
 | Component | Meaning |
 |---|---|
 | `18.4` | PostgreSQL upstream/package version from Alpine `postgresql18`. |
-| `mldm3` | Local image packaging revision for this packaged image. |
+| `mldm4` | Local image packaging revision for this packaged image. |
 
 `Mildman1848` is allowed as the public namespace/brand. Private household names must not appear in public artifacts.
 
@@ -32,10 +32,10 @@ Current version:
 The image exposes:
 
 ```text
-org.opencontainers.image.version=18.4-mldm3
-IMAGE_REVISION=mldm3
+org.opencontainers.image.version=18.4-mldm4
+IMAGE_REVISION=mldm4
 APP_VERSION=18.4
-VERSION=18.4-mldm3
+VERSION=18.4-mldm4
 ```
 
 Do not use shortened legacy variants of the packaging suffix. The project standard is explicitly `mldm<N>`.

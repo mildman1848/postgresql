@@ -21,7 +21,7 @@ make logs DOCKER='sudo docker'
 | Target | Purpose |
 |---|---|
 | `make info` | Print image metadata and effective refs. |
-| `make version` | Print `18.4-mldm3`. |
+| `make version` | Print `18.4-mldm4`. |
 | `make env-setup` | Create local `.env` from `.env.example`. |
 | `make env-validate` | Validate version/revision metadata. |
 | `make lint` | Static repo checks, s6 checks, private-term scan, Hadolint. |

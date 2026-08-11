@@ -42,11 +42,11 @@ This image follows the template versioning format:
 Current image version:
 
 ```text
-18.4-mldm3
+18.4-mldm4
 ```
 
 - Upstream application/package version: `18.4`
-- Image revision: `mldm3`
+- Image revision: `mldm4`
 
 ## Local development helpers
 
