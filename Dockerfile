@@ -6,8 +6,8 @@ FROM ghcr.io/linuxserver/baseimage-alpine:${LSIO_BASE_VERSION}
 ARG LSIO_BASE_VERSION
 ARG BUILD_DATE
 ARG APP_VERSION=18.4
-ARG IMAGE_REVISION=mldm2
-ARG VERSION=18.4-mldm2
+ARG IMAGE_REVISION=mldm3
+ARG VERSION=18.4-mldm3
 ARG VCS_REF
 ARG UPSTREAM_PACKAGE=postgresql18
 
@@ -41,6 +41,7 @@ RUN \
     jq \
     ${UPSTREAM_PACKAGE} \
     ${UPSTREAM_PACKAGE}-client \
+    postgresql-pgvector \
     shadow \
     tzdata && \
   echo "**** cleanup ****" && \

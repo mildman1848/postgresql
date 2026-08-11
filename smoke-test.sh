@@ -41,6 +41,11 @@ ${DOCKER_BIN} exec \
   "$name" \
   psql -h 127.0.0.1 -p 5432 -U postgres -d smoke -tAc 'SELECT 1;' | grep -qx '1'
 
+${DOCKER_BIN} exec \
+  -e PGPASSWORD="$password" \
+  "$name" \
+  psql -h 127.0.0.1 -p 5432 -U postgres -d smoke -tAc "SELECT name FROM pg_available_extensions WHERE name = 'vector';" | grep -qx 'vector'
+
 if ${DOCKER_BIN} exec \
   -e PGPASSWORD='deliberately-wrong-password' \
   "$name" \

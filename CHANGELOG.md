@@ -6,7 +6,7 @@ All notable changes to this image are documented in this file.
 
 ### Added
 
-- Initial image version `18.4-mldm2` using upstream `18.4`.
+- Initial image version `18.4-mldm3` using upstream `18.4`.
 - Initial LinuxServer.io-style s6-overlay image for PostgreSQL.
 - Local `make` workflow for secure secret generation, linting, building, and smoke testing.
 - GitHub Actions for linting, Docker build, security scanning, Dependabot, and upstream monitoring.
